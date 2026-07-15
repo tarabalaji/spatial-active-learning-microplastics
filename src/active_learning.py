@@ -551,8 +551,8 @@ def run_repeated_active_learning(
     maximum_sample_size: int = 200,
     batch_size: int = 10,
     verbose: bool = False,
-    uncertainty_weight: float = 0.4,
-    geographic_weight: float = 0.6,
+    uncertainty_weight: float = 0.3,
+    geographic_weight: float = 0.7,
 ) -> pd.DataFrame:
     if seeds is None:
         seeds = [
