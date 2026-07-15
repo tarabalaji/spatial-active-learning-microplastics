@@ -72,6 +72,30 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     return cleaned.reset_index(drop=True)
 
 
+def validate_cleaned_data(df: pd.DataFrame) -> None:
+    invalid_latitude = ~df["Latitude (degree)"].between(-90, 90)
+    invalid_longitude = ~df["Longitude (degree)"].between(-180, 180)
+
+    if invalid_latitude.any():
+        raise ValueError("Invalid latitude values were found.")
+
+    if invalid_longitude.any():
+        raise ValueError("Invalid longitude values were found.")
+
+    units = set(df["Unit"].dropna().astype(str).str.strip())
+
+    if units != {"pieces/m3"}:
+        raise ValueError(f"Expected only pieces/m3, but found: {sorted(units)}")
+
+    if df["Unique ID"].duplicated().any():
+        duplicated_ids = df.loc[
+            df["Unique ID"].duplicated(keep=False),
+            "Unique ID",
+        ].unique()
+
+        raise ValueError(f"Duplicate Unique ID values found: {duplicated_ids[:10]}")
+
+
 def create_features(df: pd.DataFrame) -> pd.DataFrame:
     featured = df.copy()
     featured["Year"] = featured["Sample Date"].dt.year
