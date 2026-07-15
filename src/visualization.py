@@ -5,6 +5,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.stats import t
 
 DEFAULT_SUMMARY_PATH = Path("results/repeated_active_learning_summary.csv")
 
@@ -128,9 +129,8 @@ def prepare_output_directories(
 def calculate_confidence_interval(
     standard_deviation: np.ndarray,
     number_of_runs: int,
-    confidence_multiplier: float = 1.96,
+    confidence_level: float = 0.95,
 ) -> np.ndarray:
-
     if number_of_runs <= 1:
         raise ValueError("number_of_runs must be greater than one.")
 
@@ -139,7 +139,14 @@ def calculate_confidence_interval(
         dtype=float,
     )
 
-    return confidence_multiplier * standard_deviation / np.sqrt(number_of_runs)
+    degrees_of_freedom = number_of_runs - 1
+
+    critical_value = t.ppf(
+        (1 + confidence_level) / 2,
+        df=degrees_of_freedom,
+    )
+
+    return critical_value * standard_deviation / np.sqrt(number_of_runs)
 
 
 def plot_learning_curve(
