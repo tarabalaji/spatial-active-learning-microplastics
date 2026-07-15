@@ -1,5 +1,3 @@
-"""Generate publication-quality figures from saved experiment results."""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -32,8 +30,6 @@ STRATEGY_LABELS = {
 def load_active_learning_summary(
     file_path: str | Path = DEFAULT_SUMMARY_PATH,
 ) -> pd.DataFrame:
-    """Load and validate the repeated active-learning summary CSV."""
-
     file_path = Path(file_path)
 
     if not file_path.exists():
@@ -106,9 +102,6 @@ def load_active_learning_summary(
 def prepare_output_directories(
     output_directory: str | Path,
 ) -> tuple[Path, Path]:
-    """
-    Create separate directories for primary and supplementary figures.
-    """
 
     output_directory = Path(output_directory)
 
@@ -137,13 +130,6 @@ def calculate_confidence_interval(
     number_of_runs: int,
     confidence_multiplier: float = 1.96,
 ) -> np.ndarray:
-    """
-    Calculate the half-width of an approximate 95% confidence interval.
-
-    The formula is:
-
-        1.96 × standard deviation / sqrt(number of runs)
-    """
 
     if number_of_runs <= 1:
         raise ValueError("number_of_runs must be greater than one.")
@@ -166,10 +152,6 @@ def plot_learning_curve(
     number_of_runs: int = DEFAULT_NUMBER_OF_RUNS,
     zero_reference_line: bool = False,
 ) -> None:
-    """
-    Plot mean performance with approximate 95% confidence intervals.
-    """
-
     output_path = Path(output_path)
 
     fig, ax = plt.subplots(figsize=(9, 6))
@@ -291,12 +273,6 @@ def plot_final_strategy_comparison(
     output_path: str | Path,
     number_of_runs: int = DEFAULT_NUMBER_OF_RUNS,
 ) -> None:
-    """
-    Plot final log RMSE means and 95% confidence intervals.
-
-    A point-and-error-bar plot is used because the strategy differences
-    are relatively small and are easier to compare without bars.
-    """
 
     output_path = Path(output_path)
 
@@ -425,16 +401,6 @@ def plot_improvement_over_random(
     results: pd.DataFrame,
     output_path: str | Path,
 ) -> None:
-    """
-    Plot mean log RMSE improvement relative to random sampling.
-
-    Improvement is calculated as:
-
-        random log RMSE - strategy log RMSE
-
-    Positive values mean that the strategy has lower error than random.
-    Negative values mean that the strategy has higher error than random.
-    """
 
     output_path = Path(output_path)
 
@@ -551,11 +517,6 @@ def create_final_performance_table(
     output_path: str | Path,
     number_of_runs: int = DEFAULT_NUMBER_OF_RUNS,
 ) -> pd.DataFrame:
-    """
-    Save a concise table of final strategy performance.
-
-    Confidence-interval columns are also included.
-    """
 
     output_path = Path(output_path)
 
