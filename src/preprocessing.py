@@ -123,6 +123,7 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
 def prepare_data(file_path: str | Path) -> pd.DataFrame:
     df = load_data(file_path)
     df = clean_data(df)
+    validate_cleaned_data(df)
     df = create_features(df)
     return df
 
