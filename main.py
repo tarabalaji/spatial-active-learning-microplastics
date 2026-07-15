@@ -12,6 +12,7 @@ from src.evaluation import (
     summarize_repeated_results,
 )
 from src.preprocessing import prepare_data, save_processed_data
+from src.statistics import run_statistical_analysis
 from src.visualization import generate_all_figures
 
 DATA_PATH = Path("data/raw/mediterranean_microplastics.csv")
@@ -109,6 +110,15 @@ def main() -> None:
         summary_path=Path("results/repeated_active_learning_summary.csv"),
         output_directory=Path("figures"),
         final_sample_budget=200,
+    )
+
+    print("\nRunning statistical analysis...")
+
+    run_statistical_analysis(
+        results_path=Path("results/repeated_active_learning_metrics.csv"),
+        output_directory=Path("results/statistics"),
+        final_sample_budget=200,
+        alpha=0.05,
     )
 
 
