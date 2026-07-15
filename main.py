@@ -43,8 +43,8 @@ def main() -> None:
         df=df,
         test_size=0.2,
         random_state=42,
-        latitude_block_size=2.0,
-        longitude_block_size=2.0,
+        latitude_block_size=1.0,
+        longitude_block_size=1.0,
     )
 
     print("\nStarting repeated spatial evaluation...")
